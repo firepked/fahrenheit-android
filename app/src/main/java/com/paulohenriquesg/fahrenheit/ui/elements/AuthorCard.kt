@@ -41,10 +41,10 @@ fun AuthorCard(author: Author, onClick: () -> Unit) {
         modifier = Modifier
             .width(180.dp)
             .height(240.dp)
-            .onFocusChanged { isFocused = it.isFocused }
             .semantics {
                 contentDescription = author.name
-            },
+            }
+            .onFocusChanged { isFocused = it.isFocused },
         colors = CardDefaults.colors(
             containerColor = MaterialTheme.colorScheme.surface,
             focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant

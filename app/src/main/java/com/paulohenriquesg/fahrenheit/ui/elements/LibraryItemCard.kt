@@ -46,10 +46,10 @@ fun LibraryItemCard(item: LibraryItem, onClick: (LibraryItem) -> Unit) {
             onClick = { onClick(item) },
             modifier = Modifier
                 .fillMaxSize()
-                .onFocusChanged { isFocused = it.isFocused }
                 .semantics {
                     contentDescription = item.media?.metadata?.title ?: item.id
-                },
+                }
+                .onFocusChanged { isFocused = it.isFocused },
             colors = CardDefaults.colors(
                 containerColor = MaterialTheme.colorScheme.surface,
                 focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant

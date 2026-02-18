@@ -176,10 +176,10 @@ fun CollectionCard(
         modifier = Modifier
             .width(200.dp)
             .height(160.dp)
-            .onFocusChanged { isFocused = it.isFocused }
             .semantics {
                 contentDescription = collection.name
-            },
+            }
+            .onFocusChanged { isFocused = it.isFocused },
         colors = CardDefaults.colors(
             containerColor = MaterialTheme.colorScheme.surface,
             focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant

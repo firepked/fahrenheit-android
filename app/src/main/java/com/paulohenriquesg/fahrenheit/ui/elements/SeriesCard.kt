@@ -42,10 +42,10 @@ fun SeriesCard(series: Series, onClick: (Series) -> Unit) {
             onClick = { onClick(series) },
             modifier = Modifier
                 .fillMaxSize()
-                .onFocusChanged { isFocused = it.isFocused }
                 .semantics {
                     contentDescription = series.name
-                },
+                }
+                .onFocusChanged { isFocused = it.isFocused },
             colors = CardDefaults.colors(
                 containerColor = MaterialTheme.colorScheme.surface,
                 focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant

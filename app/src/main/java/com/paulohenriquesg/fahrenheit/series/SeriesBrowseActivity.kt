@@ -172,10 +172,10 @@ fun SeriesCard(
         modifier = Modifier
             .width(200.dp)
             .height(160.dp)
-            .onFocusChanged { isFocused = it.isFocused }
             .semantics {
                 contentDescription = series.name
-            },
+            }
+            .onFocusChanged { isFocused = it.isFocused },
         colors = CardDefaults.colors(
             containerColor = MaterialTheme.colorScheme.surface,
             focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant
