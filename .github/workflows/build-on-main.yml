@@ -1,0 +1,69 @@
+name: Build APK on Main Branch
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Required for creating releases
+      packages: read   # For reading packages during build
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Download keystore file
+        run: echo "${{ secrets.KEYSTORE_FILE_CONTENT }}" | base64 --decode > ${{ github.workspace }}/release.keystore
+
+      - name: Build APK
+        run: ./gradlew assembleRelease
+        env:
+          KEYSTORE_FILE: ${{ github.workspace }}/release.keystore
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+
+      - name: Generate release notes
+        id: release_notes
+        run: |
+          # Get the latest tag
+          latest_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          
+          # Generate commit messages since last tag
+          if [ -n "$latest_tag" ]; then
+            commit_messages=$(git log ${latest_tag}..HEAD --pretty=format:"- %s")
+          else
+            commit_messages=$(git log --pretty=format:"- %s" | head -20)
+          fi
+          
+          # Create release notes
+          echo "## Latest Build from Main Branch" > release_notes.txt
+          echo "" >> release_notes.txt
+          echo "**Commit:** ${{ github.sha }}" >> release_notes.txt
+          echo "" >> release_notes.txt
+          echo "### Recent Changes" >> release_notes.txt
+          echo "$commit_messages" >> release_notes.txt
+
+      - name: Create or update latest release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: Latest Build
+          body_path: release_notes.txt
+          draft: false
+          prerelease: true
+          files: app/build/outputs/apk/release/app-release.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
