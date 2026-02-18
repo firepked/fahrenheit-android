@@ -373,7 +373,27 @@ fun MainScreen(
                     .background(MaterialTheme.colorScheme.surface)
                     .padding(16.dp)
             ) {
-                item { Spacer(modifier = Modifier.height(40.dp)) }
+                // Drawer header — Spotify-inspired
+                item {
+                    Column(
+                        modifier = Modifier.padding(vertical = 24.dp, horizontal = 8.dp)
+                    ) {
+                        Text(
+                            text = "Fahrenheit",
+                            style = MaterialTheme.typography.headlineMedium,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = username,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+
+                item { HorizontalDivider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)) }
+                item { Spacer(modifier = Modifier.height(12.dp)) }
 
                 // Library-specific menu items
                 items(menuItems) { menuItem ->
@@ -384,7 +404,7 @@ fun MainScreen(
 
                     MenuItemRow(
                         menuItem = menuItem,
-                        isFocused = currentSection == menuItem.id,
+                        isSelected = currentSection == menuItem.id,
                         focusRequester = focusRequester,
                         onClick = {
                             currentSection = menuItem.id  // Track active section
@@ -407,7 +427,7 @@ fun MainScreen(
 
                     MenuItemRow(
                         menuItem = menuItem,
-                        isFocused = currentSection == menuItem.id,
+                        isSelected = currentSection == menuItem.id,
                         focusRequester = focusRequester,
                         onClick = {
                             currentSection = menuItem.id  // Track active section
@@ -441,71 +461,85 @@ fun MainScreen(
                         }
                     }
             ) {
-                IconButton(
-                    onClick = { if (!listState.isScrollInProgress) scope.launch { drawerState.open() } },
-                    modifier = Modifier.align(Alignment.TopStart)
-                ) {
-                    Icon(Icons.Filled.Menu, contentDescription = "Open Menu")
-                }
-                Row(
-                    modifier = Modifier.align(Alignment.TopEnd),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    IconButton(
-                        onClick = {
-                            val intent = Intent(context, SearchActivity::class.java).apply {
-                                putExtra("libraryId", currentLibrary?.id)
-                            }
-                            context.startActivity(intent)
-                        },
+                Column(modifier = Modifier.fillMaxSize()) {
+                    // Top bar — Spotify-inspired
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(MaterialTheme.colorScheme.surface)
+                            .padding(horizontal = 8.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Icon(Icons.Filled.Search, contentDescription = "Search")
-                    }
-                    Greeting(
-                        name = username,
-                        modifier = Modifier.padding(16.dp)
-                    )
-                }
-                when (viewMode) {
-                    "home" -> PersonalizedHomeView(shelves, currentLibrary?.id)
-                    "library" -> {
-                        Column(
-                            modifier = Modifier
-                                .align(Alignment.TopCenter)
-                                .padding(top = 30.dp)
+                        IconButton(
+                            onClick = { if (!listState.isScrollInProgress) scope.launch { drawerState.open() } }
                         ) {
-                            val itemCount = libraryItems.size
-                            val itemLabel =
-                                if (libraries.find { it.name == currentLibrary?.name }?.mediaType == "book") "books" else "podcasts"
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.padding(16.dp)
-                            ) {
-                                currentLibrary?.name?.let {
-                                    Text(
-                                        text = it,
-                                        style = MaterialTheme.typography.headlineLarge,
-                                        modifier = Modifier.padding(bottom = 16.dp)
-                                    )
+                            Icon(
+                                Icons.Filled.Menu,
+                                contentDescription = "Open Menu",
+                                tint = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                        Text(
+                            text = currentLibrary?.name ?: "Fahrenheit",
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(horizontal = 12.dp)
+                        )
+                        IconButton(
+                            onClick = {
+                                val intent = Intent(context, SearchActivity::class.java).apply {
+                                    putExtra("libraryId", currentLibrary?.id)
                                 }
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(
-                                    text = "($itemCount $itemLabel)",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                            if (isRowLayout) {
-                                LibraryItemsRow(libraryItems, listState)
-                            } else {
-                                LibraryItemsFluid(libraryItems)
-                            }
+                                context.startActivity(intent)
+                            },
+                        ) {
+                            Icon(
+                                Icons.Filled.Search,
+                                contentDescription = "Search",
+                                tint = MaterialTheme.colorScheme.onSurface
+                            )
                         }
                     }
-                    "series" -> SeriesBrowseView(seriesList, isLoadingSeries)
-                    "authors" -> AuthorsBrowseView(currentLibrary?.id)
-                    "collections" -> CollectionsBrowseView(collectionsList, isLoadingCollections)
-                    "stats" -> StatsBrowseView(listeningStats, isLoadingStats)
+                    // Content area
+                    when (viewMode) {
+                        "home" -> PersonalizedHomeView(shelves, currentLibrary?.id)
+                        "library" -> {
+                            Column(
+                                modifier = Modifier.padding(top = 8.dp)
+                            ) {
+                                val itemCount = libraryItems.size
+                                val itemLabel =
+                                    if (libraries.find { it.name == currentLibrary?.name }?.mediaType == "book") "books" else "podcasts"
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                                ) {
+                                    Text(
+                                        text = "Library",
+                                        style = MaterialTheme.typography.headlineMedium,
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+                                    Spacer(modifier = Modifier.width(12.dp))
+                                    Text(
+                                        text = "$itemCount $itemLabel",
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
+                                if (isRowLayout) {
+                                    LibraryItemsRow(libraryItems, listState)
+                                } else {
+                                    LibraryItemsFluid(libraryItems)
+                                }
+                            }
+                        }
+                        "series" -> SeriesBrowseView(seriesList, isLoadingSeries)
+                        "authors" -> AuthorsBrowseView(currentLibrary?.id)
+                        "collections" -> CollectionsBrowseView(collectionsList, isLoadingCollections)
+                        "stats" -> StatsBrowseView(listeningStats, isLoadingStats)
+                    }
                 }
             }
         }
@@ -538,13 +572,13 @@ fun PersonalizedHomeView(shelves: List<Shelf>, libraryId: String?) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 60.dp, start = 16.dp, end = 16.dp)
+            .padding(start = 16.dp, end = 16.dp)
     ) {
         Text(
             text = "Home",
-            style = MaterialTheme.typography.headlineLarge,
+            style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.padding(bottom = 16.dp)
+            modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)
         )
 
         androidx.compose.foundation.lazy.LazyColumn {
@@ -605,7 +639,7 @@ fun PersonalizedHomeView(shelves: List<Shelf>, libraryId: String?) {
 @Composable
 fun MenuItemRow(
     menuItem: MenuItem,
-    isFocused: Boolean,
+    isSelected: Boolean,
     focusRequester: FocusRequester,
     onClick: () -> Unit
 ) {
@@ -616,7 +650,7 @@ fun MenuItemRow(
             .padding(vertical = 6.dp)
             .focusRequester(focusRequester),
         colors = CardDefaults.colors(
-            containerColor = if (isFocused) MaterialTheme.colorScheme.primaryContainer
+            containerColor = if (isSelected) MaterialTheme.colorScheme.primaryContainer
                             else MaterialTheme.colorScheme.surface,
             focusedContainerColor = MaterialTheme.colorScheme.primaryContainer
         ),
@@ -633,7 +667,7 @@ fun MenuItemRow(
             verticalAlignment = Alignment.CenterVertically
         ) {
             // Accent bar for selected item
-            if (isFocused) {
+            if (isSelected) {
                 Box(
                     modifier = Modifier
                         .width(4.dp)
@@ -648,14 +682,14 @@ fun MenuItemRow(
             Icon(
                 imageVector = menuItem.icon,
                 contentDescription = null,
-                tint = if (isFocused) MaterialTheme.colorScheme.primary
+                tint = if (isSelected) MaterialTheme.colorScheme.primary
                        else MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = menuItem.label,
                 style = MaterialTheme.typography.bodyLarge,
-                color = if (isFocused) MaterialTheme.colorScheme.primary
+                color = if (isSelected) MaterialTheme.colorScheme.primary
                        else MaterialTheme.colorScheme.onSurface
             )
         }
@@ -670,13 +704,13 @@ fun SeriesBrowseView(seriesList: List<com.paulohenriquesg.fahrenheit.api.Series>
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 60.dp, start = 48.dp, end = 48.dp, bottom = 16.dp)
+            .padding(start = 48.dp, end = 48.dp, bottom = 16.dp)
     ) {
         Text(
             text = "Series",
-            style = MaterialTheme.typography.headlineLarge,
+            style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.padding(bottom = 16.dp)
+            modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)
         )
 
         if (isLoading) {
@@ -766,13 +800,13 @@ fun AuthorsBrowseView(libraryId: String?) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 60.dp, start = 48.dp, end = 48.dp, bottom = 16.dp)
+            .padding(start = 48.dp, end = 48.dp, bottom = 16.dp)
     ) {
         Text(
             text = "Authors",
-            style = MaterialTheme.typography.headlineLarge,
+            style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.padding(bottom = 16.dp)
+            modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)
         )
 
         if (isLoading) {
@@ -827,13 +861,13 @@ fun CollectionsBrowseView(collectionsList: List<com.paulohenriquesg.fahrenheit.a
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 60.dp, start = 48.dp, end = 48.dp, bottom = 16.dp)
+            .padding(start = 48.dp, end = 48.dp, bottom = 16.dp)
     ) {
         Text(
             text = "Collections",
-            style = MaterialTheme.typography.headlineLarge,
+            style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.padding(bottom = 16.dp)
+            modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)
         )
 
         if (isLoading) {
@@ -884,13 +918,13 @@ fun StatsBrowseView(stats: com.paulohenriquesg.fahrenheit.api.ListeningStatsResp
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 60.dp, start = 48.dp, end = 48.dp, bottom = 16.dp)
+            .padding(start = 48.dp, end = 48.dp, bottom = 16.dp)
     ) {
         Text(
             text = "Listening Statistics",
-            style = MaterialTheme.typography.headlineLarge,
+            style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.padding(bottom = 16.dp)
+            modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)
         )
 
         if (isLoading) {

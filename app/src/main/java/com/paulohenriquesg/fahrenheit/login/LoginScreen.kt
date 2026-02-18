@@ -58,16 +58,22 @@ fun LoginScreen(handleLogin: (String, String, String, MutableState<Boolean>) -> 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(horizontal = 32.dp, vertical = 16.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             text = context.getString(R.string.app_name),
-            style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.onSurface,
+            style = MaterialTheme.typography.headlineLarge,
+            color = MaterialTheme.colorScheme.primary,
             modifier = Modifier
-                .padding(bottom = 16.dp)
+                .padding(bottom = 8.dp)
+        )
+        Text(
+            text = "Sign in to your server",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(bottom = 32.dp)
         )
 
         OutlinedTextField(
@@ -105,7 +111,7 @@ fun LoginScreen(handleLogin: (String, String, String, MutableState<Boolean>) -> 
                 unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(12.dp))
         OutlinedTextField(
             value = username,
             onValueChange = { username = it },
@@ -141,7 +147,7 @@ fun LoginScreen(handleLogin: (String, String, String, MutableState<Boolean>) -> 
                 unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurfaceVariant
             )
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(12.dp))
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
@@ -178,15 +184,17 @@ fun LoginScreen(handleLogin: (String, String, String, MutableState<Boolean>) -> 
                 unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurfaceVariant
             )
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(24.dp))
         if (isLoading.value) {
             CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
         } else {
             Button(
                 onClick = { handleLogin(host, username, password, isLoading) },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(48.dp)
             ) {
-                Text("Login", color = MaterialTheme.colorScheme.onPrimary)
+                Text("Sign In", color = MaterialTheme.colorScheme.onPrimary)
             }
         }
     }

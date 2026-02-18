@@ -267,7 +267,8 @@ class DetailActivity : ComponentActivity() {
                         text = episode.title,
                         isFocused = isFocused,
                         style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = if (isFocused) MaterialTheme.colorScheme.primary
+                               else MaterialTheme.colorScheme.onSurface,
                         maxLines = 2
                     )
 

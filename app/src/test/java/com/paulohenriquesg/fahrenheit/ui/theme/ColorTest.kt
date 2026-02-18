@@ -11,7 +11,7 @@ class ColorTest {
 
     @Test
     fun `SpotifyGreen accent should be the Spotify brand green`() {
-        assertEquals(0xFF1DB954, SpotifyGreen.value)
+        assertEquals(0xFF1DB954L, SpotifyGreen.value.toLong())
     }
 
     @Test
@@ -57,14 +57,14 @@ class ColorTest {
     }
 
     @Test
-    fun `original purple and pink colors are still available`() {
-        // Ensure backward compatibility — original colors not removed
-        assertNotNull(Purple80)
-        assertNotNull(PurpleGrey80)
-        assertNotNull(Pink80)
-        assertNotNull(Purple40)
-        assertNotNull(PurpleGrey40)
-        assertNotNull(Pink40)
+    fun `original purple and pink colors retain their values`() {
+        // Ensure backward compatibility — original colors retain their original ARGB values
+        assertEquals(0xFFD0BCFFL, Purple80.value.toLong())
+        assertEquals(0xFFCCC2DCL, PurpleGrey80.value.toLong())
+        assertEquals(0xFFEFB8C8L, Pink80.value.toLong())
+        assertEquals(0xFF6650A4L, Purple40.value.toLong())
+        assertEquals(0xFF625B71L, PurpleGrey40.value.toLong())
+        assertEquals(0xFF7D5260L, Pink40.value.toLong())
     }
 
     @Test
@@ -73,7 +73,7 @@ class ColorTest {
         val redChannel = (SpotifyTextGray.value shr 16) and 0xFF.toULong()
         assertTrue(
             "SpotifyTextGray red channel ($redChannel) should be >= 160 for readability",
-            redChannel >= 160u
+            redChannel >= 160uL
         )
     }
 }

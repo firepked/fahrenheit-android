@@ -154,7 +154,11 @@ fun StatCard(title: String, value: String) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .background(
+                MaterialTheme.colorScheme.surface,
+                shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp)
+            )
+            .padding(20.dp)
     ) {
         Text(
             text = title,
@@ -165,7 +169,7 @@ fun StatCard(title: String, value: String) {
         Text(
             text = value,
             style = MaterialTheme.typography.displaySmall,
-            color = MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.primary
         )
     }
 }

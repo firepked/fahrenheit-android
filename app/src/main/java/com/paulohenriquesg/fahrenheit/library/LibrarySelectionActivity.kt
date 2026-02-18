@@ -146,6 +146,9 @@ fun LibrarySelectionCard(
             focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant
         ),
         border = CardDefaults.border(
+            border = if (isSelected) Border(
+                border = BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
+            ) else Border.None,
             focusedBorder = Border(
                 border = BorderStroke(3.dp, MaterialTheme.colorScheme.primary)
             )
