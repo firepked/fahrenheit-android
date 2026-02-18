@@ -517,7 +517,7 @@ fun MainScreen(
                                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
                                 ) {
                                     Text(
-                                        text = "Library",
+                                        text = currentLibrary?.name ?: "Library",
                                         style = MaterialTheme.typography.headlineMedium,
                                         color = MaterialTheme.colorScheme.onSurface
                                     )
