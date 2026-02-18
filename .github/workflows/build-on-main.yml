@@ -23,8 +23,6 @@ jobs:
 
       - name: Download keystore file
         run: echo "${{ secrets.KEYSTORE_FILE_CONTENT }}" | base64 --decode > ${{ github.workspace }}/release.keystore
-        env:
-          KEYSTORE_FILE_CONTENT: ${{ secrets.KEYSTORE_FILE_CONTENT }}
 
       - name: Build APK
         run: ./gradlew assembleRelease
@@ -33,9 +31,6 @@ jobs:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-
-      - name: List APK files
-        run: ls -la app/build/outputs/apk/release/
 
       - name: Generate release notes
         id: release_notes
@@ -57,12 +52,6 @@ jobs:
           echo "" >> release_notes.txt
           echo "### Recent Changes" >> release_notes.txt
           echo "$commit_messages" >> release_notes.txt
-
-      - name: Delete existing latest release
-        continue-on-error: true
-        run: gh release delete latest -y
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create or update latest release
         uses: softprops/action-gh-release@v2
