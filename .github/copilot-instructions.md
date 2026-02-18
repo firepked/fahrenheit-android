@@ -230,6 +230,7 @@ When adding new dependencies:
 
 ## Resources
 
-- Audiobookshelf API: The app consumes the Audiobookshelf REST API
-- Android TV Guidelines: Follow Material Design for TV best practices
-- Jetpack Compose: Use modern Compose patterns for UI development
+- **Audiobookshelf API**: https://api.audiobookshelf.org/ - Official API documentation
+- **Audiobookshelf API GitHub**: https://github.com/audiobookshelf/audiobookshelf-api-docs
+- **Android TV Guidelines**: Follow Material Design for TV best practices
+- **Jetpack Compose**: Use modern Compose patterns for UI development
