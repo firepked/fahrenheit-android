@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit
 
 object GitHubApiClient {
     private const val BASE_URL = "https://api.github.com/"
-    private const val GITHUB_OWNER = "paulohenriquesg"
+    private const val GITHUB_OWNER = "firepked"
     private const val GITHUB_REPO = "fahrenheit-android"
 
     private var apiService: GitHubApiService? = null
