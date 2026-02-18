@@ -20,6 +20,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.tv.material3.Border
@@ -44,7 +46,10 @@ fun LibraryItemCard(item: LibraryItem, onClick: (LibraryItem) -> Unit) {
             onClick = { onClick(item) },
             modifier = Modifier
                 .fillMaxSize()
-                .onFocusChanged { isFocused = it.isFocused },
+                .onFocusChanged { isFocused = it.isFocused }
+                .semantics {
+                    contentDescription = item.media?.metadata?.title ?: item.id
+                },
             colors = CardDefaults.colors(
                 containerColor = MaterialTheme.colorScheme.surface,
                 focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant
@@ -65,7 +70,7 @@ fun LibraryItemCard(item: LibraryItem, onClick: (LibraryItem) -> Unit) {
                     itemId = item.id,
                     contentDescription = item.media?.metadata?.title ?: "Cover"
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
                 // For podcasts with recent episode, show episode title
                 // For books/podcasts without recent episode, show item title
@@ -79,7 +84,8 @@ fun LibraryItemCard(item: LibraryItem, onClick: (LibraryItem) -> Unit) {
                     text = displayTitle,
                     isFocused = isFocused,
                     style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = if (isFocused) MaterialTheme.colorScheme.primary
+                           else MaterialTheme.colorScheme.onSurface,
                     maxLines = 1
                 )
             }
@@ -88,14 +94,14 @@ fun LibraryItemCard(item: LibraryItem, onClick: (LibraryItem) -> Unit) {
             Box(
                 modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .size(24.dp) // Set a fixed size for the badge
-                    .background(MaterialTheme.colorScheme.error, shape = CircleShape)
+                    .size(24.dp)
+                    .background(MaterialTheme.colorScheme.primary, shape = CircleShape)
                     .clip(CircleShape),
-                contentAlignment = Alignment.Center // Center the text within the badge
+                contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = if (item.numEpisodesIncomplete > 99) "99+" else item.numEpisodesIncomplete.toString(),
-                    color = MaterialTheme.colorScheme.onError,
+                    color = MaterialTheme.colorScheme.onPrimary,
                     style = MaterialTheme.typography.bodySmall
                 )
             }

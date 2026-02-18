@@ -20,32 +20,39 @@ fun FahrenheitTheme(
 
     val colorScheme = if (isDarkTheme) {
         darkColorScheme(
-            primary = Purple80,
-            secondary = PurpleGrey80,
-            tertiary = Pink80,
-            background = Color(0xFF121212), // Dark Gray
-            surface = Color(0xFF1E1E1E), // Slightly lighter dark for cards
-            surfaceVariant = Color(0xFF4A3D5C), // Muted purple for disabled buttons
-            onBackground = Color(0xFFFFFFFF), // White for text
-            onSurface = Color(0xFFFFFFFF), // White for text on cards
-            onSurfaceVariant = Color(0xFFCAC4D0), // Light purple for disabled text
-            onPrimary = Color(0xFFFFFFFF), // White for button text
-            onSecondary = Color(0xFFFFFFFF), // White for secondary button text
-            onSecondaryContainer = Color(0xFFFFFFFF), // White for container text
-            onTertiary = Color(0xFFFFFFFF), // White for tertiary button text
-            onTertiaryContainer = Color(0xFFFFFFFF), // White for tertiary containers
-            secondaryContainer = Color(0xFF4A4458), // Medium purple container
-            tertiaryContainer = Color(0xFF633B48) // Medium pink container
+            primary = SpotifyGreen,                        // Accent: Spotify green
+            secondary = SpotifyTextGray,                   // Muted secondary text
+            tertiary = SpotifyGreenLight,                  // Tertiary accent variant
+            background = SpotifyBlack,                     // Deep dark background
+            surface = SpotifyDarkGray,                     // Card / elevated surface
+            surfaceVariant = FocusedItemBackground,        // Focused card background
+            onBackground = Color(0xFFFFFFFF),              // White text on background
+            onSurface = Color(0xFFFFFFFF),                 // White text on cards
+            onSurfaceVariant = SpotifyTextGray,            // Muted text for secondary info
+            onPrimary = Color(0xFF000000),                 // Black text on green buttons
+            onSecondary = Color(0xFFFFFFFF),               // White for secondary button text
+            onSecondaryContainer = Color(0xFFFFFFFF),      // White for container text
+            onTertiary = Color(0xFF000000),                // Black on tertiary accent
+            onTertiaryContainer = Color(0xFFFFFFFF),       // White for tertiary containers
+            primaryContainer = SpotifyMediumGray,          // Container behind primary actions
+            secondaryContainer = SpotifyMediumGray,        // Medium gray container
+            tertiaryContainer = SpotifyLightGray           // Light gray container
         )
     } else {
         lightColorScheme(
-            primary = Purple40,
-            secondary = PurpleGrey40,
-            tertiary = Pink40,
-            background = Color.White, // White background
-            surface = Color(0xFFF5F5F5), // Light gray for cards
-            onBackground = Color(0xFF000000), // Black for text
-            onSurface = Color(0xFF000000) // Black for text on cards
+            primary = SpotifyGreenDark,                    // Accent: darker green for light bg
+            secondary = Color(0xFF535353),                  // Muted secondary
+            tertiary = SpotifyGreen,                       // Tertiary accent
+            background = Color(0xFFF8F8F8),                // Off-white background
+            surface = Color(0xFFFFFFFF),                   // White cards
+            surfaceVariant = Color(0xFFE8F5E9),            // Light green tint for focus
+            onBackground = Color(0xFF191414),              // Near-black text
+            onSurface = Color(0xFF191414),                 // Near-black text on cards
+            onSurfaceVariant = Color(0xFF535353),           // Muted text
+            onPrimary = Color(0xFFFFFFFF),                 // White on green buttons
+            primaryContainer = Color(0xFFE8F5E9),          // Light green container
+            secondaryContainer = Color(0xFFE0E0E0),        // Light gray container
+            tertiaryContainer = Color(0xFFE8F5E9)          // Light green container
         )
     }
     MaterialTheme(

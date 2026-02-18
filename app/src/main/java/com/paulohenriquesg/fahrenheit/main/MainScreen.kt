@@ -613,11 +613,12 @@ fun MenuItemRow(
         onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp)
+            .padding(vertical = 6.dp)
             .focusRequester(focusRequester),
         colors = CardDefaults.colors(
-            containerColor = MaterialTheme.colorScheme.surface,
-            focusedContainerColor = MaterialTheme.colorScheme.primaryContainer  // Focus = selection
+            containerColor = if (isFocused) MaterialTheme.colorScheme.primaryContainer
+                            else MaterialTheme.colorScheme.surface,
+            focusedContainerColor = MaterialTheme.colorScheme.primaryContainer
         ),
         border = CardDefaults.border(
             focusedBorder = Border(
@@ -628,19 +629,34 @@ fun MenuItemRow(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(horizontal = 16.dp, vertical = 14.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            // Accent bar for selected item
+            if (isFocused) {
+                Box(
+                    modifier = Modifier
+                        .width(4.dp)
+                        .height(24.dp)
+                        .background(
+                            MaterialTheme.colorScheme.primary,
+                            shape = androidx.compose.foundation.shape.RoundedCornerShape(2.dp)
+                        )
+                )
+                Spacer(modifier = Modifier.width(12.dp))
+            }
             Icon(
                 imageVector = menuItem.icon,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurface
+                tint = if (isFocused) MaterialTheme.colorScheme.primary
+                       else MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = menuItem.label,
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface
+                color = if (isFocused) MaterialTheme.colorScheme.primary
+                       else MaterialTheme.colorScheme.onSurface
             )
         }
     }

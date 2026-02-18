@@ -1,0 +1,79 @@
+package com.paulohenriquesg.fahrenheit.ui.theme
+
+import org.junit.Assert.*
+import org.junit.Test
+
+/**
+ * Unit tests for the Spotify-inspired color palette.
+ * Validates that accent colors, surface tones, and focus colors are defined correctly.
+ */
+class ColorTest {
+
+    @Test
+    fun `SpotifyGreen accent should be the Spotify brand green`() {
+        assertEquals(0xFF1DB954, SpotifyGreen.value)
+    }
+
+    @Test
+    fun `SpotifyGreenDark should be darker than SpotifyGreen`() {
+        // SpotifyGreenDark (0xFF1AA34A) should have a lower green channel than SpotifyGreen (0xFF1DB954)
+        val greenChannelDark = (SpotifyGreenDark.value shr 8) and 0xFF.toULong()
+        val greenChannelLight = (SpotifyGreen.value shr 8) and 0xFF.toULong()
+        assertTrue(
+            "SpotifyGreenDark green channel ($greenChannelDark) should be <= SpotifyGreen ($greenChannelLight)",
+            greenChannelDark <= greenChannelLight
+        )
+    }
+
+    @Test
+    fun `SpotifyGreenLight should be lighter than SpotifyGreen`() {
+        val greenChannelBright = (SpotifyGreenLight.value shr 8) and 0xFF.toULong()
+        val greenChannelBase = (SpotifyGreen.value shr 8) and 0xFF.toULong()
+        assertTrue(
+            "SpotifyGreenLight green channel ($greenChannelBright) should be >= SpotifyGreen ($greenChannelBase)",
+            greenChannelBright >= greenChannelBase
+        )
+    }
+
+    @Test
+    fun `dark surface colors should progressively lighten`() {
+        // SpotifyBlack < SpotifyDarkGray < SpotifyMediumGray < SpotifyLightGray
+        assertTrue(SpotifyBlack.value < SpotifyDarkGray.value)
+        assertTrue(SpotifyDarkGray.value < SpotifyMediumGray.value)
+        assertTrue(SpotifyMediumGray.value < SpotifyLightGray.value)
+    }
+
+    @Test
+    fun `FocusRingColor should match SpotifyGreenLight`() {
+        assertEquals(SpotifyGreenLight.value, FocusRingColor.value)
+    }
+
+    @Test
+    fun `SelectedItemBackground should be darker than FocusedItemBackground`() {
+        assertTrue(
+            "SelectedItemBackground should be darker than FocusedItemBackground",
+            SelectedItemBackground.value < FocusedItemBackground.value
+        )
+    }
+
+    @Test
+    fun `original purple and pink colors are still available`() {
+        // Ensure backward compatibility — original colors not removed
+        assertNotNull(Purple80)
+        assertNotNull(PurpleGrey80)
+        assertNotNull(Pink80)
+        assertNotNull(Purple40)
+        assertNotNull(PurpleGrey40)
+        assertNotNull(Pink40)
+    }
+
+    @Test
+    fun `SpotifyTextGray should have high luminance for readability`() {
+        // SpotifyTextGray (0xFFB3B3B3) — the red channel as a proxy for luminance
+        val redChannel = (SpotifyTextGray.value shr 16) and 0xFF.toULong()
+        assertTrue(
+            "SpotifyTextGray red channel ($redChannel) should be >= 160 for readability",
+            redChannel >= 160u
+        )
+    }
+}
