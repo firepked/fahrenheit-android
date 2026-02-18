@@ -70,17 +70,32 @@ fun SettingsScreen() {
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-            .padding(16.dp)
+            .padding(24.dp)
     ) {
-        Text(text = "Settings", style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.onSurface)
-        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = "Settings",
+            style = MaterialTheme.typography.headlineMedium,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+        Spacer(modifier = Modifier.height(24.dp))
 
         // Dark Theme Toggle
         Row(
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    MaterialTheme.colorScheme.surface,
+                    shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp)
+                )
+                .padding(horizontal = 16.dp, vertical = 14.dp)
         ) {
-            Text(text = "Dark Theme", color = MaterialTheme.colorScheme.onSurface)
-            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = "Dark Theme",
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.weight(1f)
+            )
             Switch(
                 checked = isDarkTheme,
                 onCheckedChange = {
@@ -89,14 +104,25 @@ fun SettingsScreen() {
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
         // Layout Toggle
         Row(
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    MaterialTheme.colorScheme.surface,
+                    shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp)
+                )
+                .padding(horizontal = 16.dp, vertical = 14.dp)
         ) {
-            Text(text = "Row Layout (Grid if disabled)", color = MaterialTheme.colorScheme.onSurface)
-            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = "Row Layout (Grid if disabled)",
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.weight(1f)
+            )
             Switch(
                 checked = isRowLayout,
                 onCheckedChange = {
@@ -105,7 +131,7 @@ fun SettingsScreen() {
             )
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(32.dp))
 
         // App Version
         Text(
@@ -114,7 +140,7 @@ fun SettingsScreen() {
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         // Check for Updates Button
         Button(

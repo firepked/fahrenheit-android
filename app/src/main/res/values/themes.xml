@@ -2,5 +2,9 @@
 
     <style name="Theme.Fahrenheit" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="android:windowBackground">#FF121212</item>
+        <item name="android:colorPrimary">#FF1DB954</item>
+        <item name="colorPrimary">#FF1DB954</item>
+        <item name="android:colorAccent">#FF1DB954</item>
+        <item name="colorAccent">#FF1DB954</item>
     </style>
 </resources>

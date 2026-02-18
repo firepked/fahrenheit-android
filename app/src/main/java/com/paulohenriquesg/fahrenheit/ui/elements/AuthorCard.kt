@@ -11,9 +11,16 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -27,11 +34,17 @@ import com.paulohenriquesg.fahrenheit.api.Author
 @OptIn(ExperimentalTvMaterial3Api::class)
 @Composable
 fun AuthorCard(author: Author, onClick: () -> Unit) {
+    var isFocused by remember { mutableStateOf(false) }
+
     Card(
         onClick = onClick,
         modifier = Modifier
             .width(180.dp)
-            .height(240.dp),
+            .height(240.dp)
+            .semantics {
+                contentDescription = author.name
+            }
+            .onFocusChanged { isFocused = it.isFocused },
         colors = CardDefaults.colors(
             containerColor = MaterialTheme.colorScheme.surface,
             focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant
@@ -62,7 +75,8 @@ fun AuthorCard(author: Author, onClick: () -> Unit) {
             Text(
                 text = author.name,
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = if (isFocused) MaterialTheme.colorScheme.primary
+                       else MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Center,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
